@@ -1,0 +1,15 @@
+{
+    "name": "andrewhood125/gcloud-php",
+    "description": "Google Cloud Storage API",
+    "require": {
+        "google/auth": "^0.8.0",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrew Hood",
+            "email": "andrewhood125@gmail.com"
+        }
+    ]
+}
