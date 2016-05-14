@@ -42,11 +42,13 @@ class GoogleCloudStorage
     /**
      * Like `get` but downloads the object.
      */
-    public function download($object, $path) {
+    public function download($object, $folder) {
+        $fullPath = $folder.$object;
         $object = $this->get($object);
         $this->client->get($object->mediaLink, [
-            'sink' => $path
+            'sink' => $fullPath
         ]);
+        return $fullPath;
     }
 
     /**
