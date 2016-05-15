@@ -5,6 +5,8 @@ namespace Andrewhood125;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Google\Auth\ApplicationDefaultCredentials;
+use Andrewhood125\Exceptions\ConfigurationException;
+use Andrewhood125\Exceptions\MissingParameterException;
 
 class GoogleCloudStorage
 {
@@ -14,6 +16,9 @@ class GoogleCloudStorage
     public function __construct()
     {
         $this->bucket = getenv('GOOGLE_CLOUD_STORAGE_BUCKET');
+
+        if(!$this->bucket)
+            throw new ConfigurationException("GOOGLE_CLOUD_STORGE_BUCKET is not set");
 
         // create middleware
         $middleware = ApplicationDefaultCredentials::getMiddleware(config('storage.scopes'));
@@ -31,10 +36,14 @@ class GoogleCloudStorage
     /**
      * https://cloud.google.com/storage/docs/json_api/v1/objects/get
      */
-    public function get($object) {
+    public function get($name) {
+
+        if(empty($name))
+            throw new MissingParameterException("Parameter \$name is empty: $name");
+
         return json_decode(
             $this->client->get(
-                "$this->baseUrl/b/$this->bucket/o/$object"
+                "$this->baseUrl/b/$this->bucket/o/$name"
             )->getBody()
         );
     }
