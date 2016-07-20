@@ -12,6 +12,7 @@ class GoogleCloudStorage
 {
 
     public $baseUrl = 'https://www.googleapis.com/storage/v1';
+    public $uploadUrl = 'https://www.googleapis.com/upload/storage/v1';
 
     public function __construct()
     {
@@ -58,6 +59,21 @@ class GoogleCloudStorage
             'sink' => $fullPath
         ]);
         return $fullPath;
+    }
+
+    /**
+     * https://cloud.google.com/storage/docs/json_api/v1/objects/insert
+     */
+    public function insert($file) {
+        $body = fopen($file, 'r');
+        $params = [
+            'uploadType' => 'media',
+            'name' => basename($file)
+        ];
+        $paramString = http_build_query($params);
+        $this->client->request('POST', "{$this->uploadUrl}/b/{$this->bucket}/o?{$paramString}", [
+            'body' => $body
+        ]);
     }
 
     /**
