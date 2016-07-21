@@ -14,9 +14,9 @@ class GoogleCloudStorage
     public $baseUrl = 'https://www.googleapis.com/storage/v1';
     public $uploadUrl = 'https://www.googleapis.com/upload/storage/v1';
 
-    public function __construct()
+    public function __construct($bucket = null)
     {
-        $this->bucket = getenv('GOOGLE_CLOUD_STORAGE_BUCKET');
+        $this->bucket = $bucket ?: getenv('GOOGLE_CLOUD_STORAGE_BUCKET');
 
         if(!$this->bucket)
             throw new ConfigurationException("GOOGLE_CLOUD_STORGE_BUCKET is not set");
